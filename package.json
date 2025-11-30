@@ -13,12 +13,18 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/KaanBagnyuk/base-playground/issues"
   },
   "homepage": "https://github.com/KaanBagnyuk/base-playground#readme",
   "dependencies": {
     "ethers": "^6.15.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "dotenv": "^17.2.3",
+    "hardhat": "^3.0.16",
+    "typescript": "^5.9.3"
   }
 }
