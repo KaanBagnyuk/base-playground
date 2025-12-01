@@ -1,26 +1,34 @@
 import { HardhatUserConfig } from "hardhat/config";
 import dotenv from "dotenv";
 
-// Загружаем переменные окружения из .env
 dotenv.config();
 
-// Читаем приватный ключ из .env (пока там фейковое значение)
 const PRIVATE_KEY = process.env.PRIVATE_KEY || "";
 
 const config: HardhatUserConfig = {
-  solidity: "0.8.28", // эту версию Hardhat уже скачал
-  networks: {
-    // Локальная сеть Hardhat (по умолчанию)
-    hardhat: {},
-
-    // Тестовая сеть Base Sepolia
-    "base-sepolia": {
-      url: "https://sepolia.base.org",
-      accounts: PRIVATE_KEY ? [PRIVATE_KEY] : [],
-      gasPrice: 1_000_000_000, // 1 gwei
+  solidity: {
+    version: "0.8.28",
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 200,
+      },
     },
   },
-  defaultNetwork: "hardhat",
+  networks: {
+    // Локальная сеть Hardhat 3 создаётся автоматически как edr-simulated.
+    // Мы её не трогаем — используем "из коробки".
+
+    "base-sepolia": {
+      type: "http", // для RPC-сети всегда "http"
+      url: "https://sepolia.base.org",
+      chainId: 84532,
+      accounts:
+        PRIVATE_KEY && !PRIVATE_KEY.startsWith("0x000000")
+          ? [PRIVATE_KEY]
+          : [],
+    },
+  },
 };
 
 export default config;
