@@ -4,7 +4,7 @@ const RPC_URL = "https://mainnet.base.org";
 // Любой EVM-адрес в формате 0x... (42 символа)
 // Можешь оставить пример или подставить СВОЙ ПУБЛИЧНЫЙ адрес из Metamask/биржи.
 // ⚠️ Никогда не вставляй сюда seed-фразу или приватный ключ!
-const ADDRESS = "0x4c3e70b967c28f4eedbd4ac793458811f6eac334";
+const ADDRESS = "0xfd32507B33220E1Be82E9bb83B4Ea74d4B59Cb25";
 
 // Функция для получения баланса
 async function main() {

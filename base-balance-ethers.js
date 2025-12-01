@@ -3,7 +3,7 @@ const { ethers } = require("ethers");
 const RPC_URL = "https://mainnet.base.org";
 
 // сюда подставь СВОЙ публичный адрес, который ты уже проверял раньше
-const ADDRESS = "0x4c3e70b967c28f4eedbd4ac793458811f6eac334";
+const ADDRESS = "0xfd32507B33220E1Be82E9bb83B4Ea74d4B59Cb25";
 
 async function main() {
   const provider = new ethers.JsonRpcProvider(RPC_URL);
