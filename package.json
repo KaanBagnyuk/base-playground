@@ -4,7 +4,8 @@
   "description": "",
   "main": "base-balance.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start:backend": "node backend/server.js"
   },
   "repository": {
     "type": "git",
@@ -20,11 +21,13 @@
   "homepage": "https://github.com/KaanBagnyuk/base-playground#readme",
   "dependencies": {
     "@openzeppelin/contracts": "^5.4.0",
-    "ethers": "^6.15.0"
+    "express": "^5.2.1"
   },
   "devDependencies": {
+    "@nomicfoundation/hardhat-ethers": "^4.0.3",
     "@types/node": "^24.10.1",
     "dotenv": "^17.2.3",
+    "ethers": "^6.16.0",
     "hardhat": "^3.0.16",
     "typescript": "^5.9.3"
   }

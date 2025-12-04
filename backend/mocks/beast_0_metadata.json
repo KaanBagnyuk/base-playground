@@ -1,0 +1,73 @@
+{
+  "name": "Base Beast #0",
+  "description": "Your Base Mainnet activity, DeFi usage, builder footprint and social reach, all forged into a single onchain Beast.",
+  "image": "https://cdn.basebeast.xyz/images/0.png",
+  "external_url": "https://app.basebeast.xyz/beast/0",
+  "background_color": "020b26",
+  "attributes": [
+    {
+      "trait_type": "Species",
+      "value": "Plasma Drake"
+    },
+    {
+      "trait_type": "Rarity",
+      "value": "Rare"
+    },
+    {
+      "trait_type": "User Type",
+      "value": "Builder"
+    },
+    {
+      "trait_type": "Size",
+      "value": "Tall"
+    },
+    {
+      "trait_type": "Muscles",
+      "value": "Shredded"
+    },
+    {
+      "trait_type": "Weapon",
+      "value": "Standard Sword"
+    },
+    {
+      "trait_type": "Shield",
+      "value": "Basic Shield"
+    },
+    {
+      "trait_type": "Armor",
+      "value": "Light Builder Armor"
+    },
+    {
+      "trait_type": "Helmet",
+      "value": "Influencer Helm"
+    },
+    {
+      "trait_type": "Activity Days Tier",
+      "value": 3
+    },
+    {
+      "trait_type": "Total Transactions Tier",
+      "value": 4
+    },
+    {
+      "trait_type": "DeFi Swaps Tier",
+      "value": 2
+    },
+    {
+      "trait_type": "DeFi Liquidity Tier",
+      "value": 1
+    },
+    {
+      "trait_type": "Builder Tier",
+      "value": 1
+    },
+    {
+      "trait_type": "Social Tier",
+      "value": 3
+    },
+    {
+      "trait_type": "Overall Tier",
+      "value": 4
+    }
+  ]
+}

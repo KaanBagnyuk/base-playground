@@ -1,4 +1,5 @@
 import { HardhatUserConfig } from "hardhat/config";
+import hardhatEthers from "@nomicfoundation/hardhat-ethers";  // <-- ВАЖНО
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -16,11 +17,8 @@ const config: HardhatUserConfig = {
     },
   },
   networks: {
-    // Локальная сеть Hardhat 3 создаётся автоматически как edr-simulated.
-    // Мы её не трогаем — используем "из коробки".
-
     "base-sepolia": {
-      type: "http", // для RPC-сети всегда "http"
+      type: "http",
       url: "https://sepolia.base.org",
       chainId: 84532,
       accounts:
@@ -29,6 +27,7 @@ const config: HardhatUserConfig = {
           : [],
     },
   },
+  plugins: [hardhatEthers],   // <-- ПЛАГИН ПОДКЛЮЧЕН ТУТ
 };
 
 export default config;

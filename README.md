@@ -86,7 +86,7 @@ All 13 Base Learn modules completed using this repo:
 - ✅ ... (other modules)
 
 Network: Base Sepolia  
-Builder wallet (public): `0x...`  <!-- сюда вставь адрес Wallet B -->
+Builder wallet (public): `0xfd32507B33220E1Be82E9bb83B4Ea74d4B59Cb25`
 
 ---
 
@@ -105,3 +105,40 @@ cd base-playground
 
 You can view it on Basescan:  
 https://sepolia.basescan.org/address/0xfF3D6d5A56C4C8c0397D2cd884A3Cdd4eEe14195
+
+# Base Beast — Onchain Activity Passport for Base
+
+Base Beast — это ончейн-паспорт активности для пользователей сети Base.  
+Каждый кошелёк получает **Beast Score** (набор метрик) и может заминтить NFT-монстра (Base Beast), чьи атрибуты завязаны на реальную активность в сети.
+
+## Архитектура
+
+### Onchain (Hardhat / Solidity)
+
+Контракты живут в папке `contracts/` и деплоятся через Hardhat на Base:
+
+- **BeastScoreRegistry.sol**  
+  Хранит структурированный скор кошелька:
+  - `activityDaysTier`
+  - `txCountTier`
+  - `defiSwapsTier`
+  - `liquidityTier`
+  - `builderTier`
+  - `overallTier`  
+  Обновляется только специальным адресом `scoreOracle`.
+
+- **BaseBeastNFT.sol**  
+  ERC-721 NFT:
+  - читает скор из `BeastScoreRegistry`,
+  - генерирует визуальные параметры монстра (`speciesId`, `rarity`, `userType`),
+  - фиксирует локальный snapshot `BeastScoreLocal` + `BeastVisual` по `tokenId`.
+
+Настройка Hardhat — в `hardhat.config.ts`. Сеть Base Sepolia уже добавлена как:
+
+```ts
+"base-sepolia": {
+  type: "http",
+  url: "https://sepolia.base.org",
+  chainId: 84532,
+  accounts: PRIVATE_KEY ? [PRIVATE_KEY] : []
+}

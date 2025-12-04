@@ -8,7 +8,7 @@ dotenv.config();
 const RPC_URL = "https://sepolia.base.org";
 
 // 👉 сюда вставляем адрес ЗАДЕПЛОЕННОГО контракта Counter
-const CONTRACT_ADDRESS = "0xD33aFeE4a9df5E9195920A5B8124F58B63B1d60f";
+const CONTRACT_ADDRESS = "0xfF3D6d5A56C4C8c0397D2cd884A3Cdd4eEe14195";
 
 async function main() {
   const PRIVATE_KEY = process.env.PRIVATE_KEY;
