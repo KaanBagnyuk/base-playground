@@ -9,13 +9,13 @@
       "score": 73
     },
     "tiers": {
-      "activity_days": 3,
-      "tx_count": 4,
-      "defi_swaps": 2,
-      "liquidity_yield": 1,
-      "builder": 1,
-      "social": 3
-    },
+  "activity_days": 0,
+  "tx_count": 0,
+  "defi_swaps": 0,
+  "liquidity_yield": 0,
+  "builder": 0,
+  "social": 0
+},
     "metrics": {
       "activity_days": {
         "label": "Base Activity Days",
@@ -34,13 +34,13 @@
         "description": "All Base Mainnet transactions sent by this address."
       },
       "defi_swaps": {
-        "label": "DeFi Swaps",
-        "category": "defi",
-        "raw_value": 78,
-        "tier": 2,
-        "tier_label": "Onchain Explorer",
-        "description": "Number of swaps across major DEXes on Base."
-      },
+  "label": "DeFi Swaps",
+  "category": "defi",
+  "raw_value": 0,
+  "tier": 0,
+  "tier_label": "No DeFi",
+  "description": "Number of swaps across major DEXes on Base."
+},
       "liquidity_yield": {
         "label": "DeFi Liquidity / Yield",
         "category": "defi",

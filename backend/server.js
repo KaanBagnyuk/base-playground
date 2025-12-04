@@ -5,20 +5,20 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 const app = express();
-// Оставляем порт 4000, чтобы не путаться со старыми процессами
 const PORT = process.env.PORT || 4000;
 
-console.log("Base Beast backend v0.4 (Etherscan V2, no test overrides) starting...");
+console.log("Base Beast backend v0.9 (Etherscan v2: tx_count + activity_days + defi_swaps) starting...");
 
-// В ESM нет __dirname, поэтому делаем сами:
+// ESM: собираем __dirname
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Etherscan / Basescan API key из .env
-const BASESCAN_API_KEY = process.env.BASESCAN_API_KEY || "";
-console.log("BASESCAN_API_KEY length:", BASESCAN_API_KEY.length);
+// 🔑 API key от Etherscan v2 (ты уже его завёл и он работает)
+const ETHERSCAN_API_KEY = process.env.ETHERSCAN_API_KEY || "";
+console.log("ETHERSCAN_API_KEY length:", ETHERSCAN_API_KEY.length);
+console.log("RUNTIME BACKEND FILE:", __filename);
 
-// Вспомогательная функция: читаем JSON из файла
+// Вспомогательная функция: читаем JSON-файлы
 function loadJson(relativePath) {
   const fullPath = path.join(__dirname, relativePath);
   const raw = fs.readFileSync(fullPath, "utf8");
@@ -63,41 +63,99 @@ const ACTIVITY_TIER_LABELS = [
   "OG"          // 5
 ];
 
-// --- Тянем tx'ы из Etherscan V2 для Base (chainid=8453) ---
+// --- Маппинг defi_swaps -> tier ---
+function mapDefiSwapsToTier(rawSwaps) {
+  if (rawSwaps >= 500) return 5;
+  if (rawSwaps >= 100) return 4;
+  if (rawSwaps >= 20)  return 3;
+  if (rawSwaps >= 5)   return 2;
+  if (rawSwaps >= 1)   return 1;
+  return 0;
+}
+
+const DEFI_TIER_LABELS = [
+  "No DeFi",          // 0
+  "Getting Started",  // 1
+  "Onchain Explorer", // 2
+  "DeFi User",        // 3
+  "DeFi Power User",  // 4
+  "DeFi DeGen"        // 5
+];
+
+// --- эвристика: функция похожа на DeFi swap / route / bridge ---
+function isDefiLikeFunctionName(fnRaw) {
+  if (!fnRaw) return false;
+
+  const fn = String(fnRaw).toLowerCase().trim();
+
+  // иногда Etherscan даёт "swap (uint256,uint256,...)" — вытащим "swap"
+  const baseName = fn.split("(")[0].trim();
+
+  const keywords = [
+    "swap",
+    "route",
+    "bridge",
+    "zap",
+    "liquidity",
+    "stake",
+    "unstake",
+    "deposit",
+    "withdraw",
+    "borrow",
+    "repay",
+    "flash"
+  ];
+
+  // отсекаем чистые transfer/approve/mint
+  const blacklist = ["transfer", "approve", "mint", "send"];
+
+  if (blacklist.some((b) => baseName.includes(b))) {
+    return false;
+  }
+
+  return keywords.some((kw) => baseName.includes(kw));
+}
+
+// --- Тянем normal tx через Etherscan v2 (chainid=8453 = Base Mainnet) ---
+// и сразу считаем:
+//  - txCount (исходящие)
+//  - activityDays (любой from/to)
+//  - defiSwaps (исходящие с functionName похожим на DeFi)
 async function fetchTxStatsFromEtherscan(address) {
-  if (!BASESCAN_API_KEY) {
-    console.warn("No BASESCAN_API_KEY set; using mocked tx/activity metrics");
+  if (!ETHERSCAN_API_KEY) {
+    console.warn("No ETHERSCAN_API_KEY set; returning null stats");
     return null;
   }
 
   const url = new URL("https://api.etherscan.io/v2/api");
   url.searchParams.set("chainid", "8453");          // Base Mainnet
   url.searchParams.set("module", "account");
-  url.searchParams.set("action", "txlist");         // normal transactions
+  url.searchParams.set("action", "txlist");
   url.searchParams.set("address", address);
   url.searchParams.set("startblock", "0");
   url.searchParams.set("endblock", "9999999999");
   url.searchParams.set("page", "1");
   url.searchParams.set("offset", "10000");
   url.searchParams.set("sort", "asc");
-  url.searchParams.set("apikey", BASESCAN_API_KEY);
+  url.searchParams.set("apikey", ETHERSCAN_API_KEY);
 
-  console.log("Fetching tx stats from:", url.toString());
+  console.log("Fetching tx stats from Etherscan v2:", url.toString());
 
   const resp = await fetch(url);
-
   if (!resp.ok) {
     throw new Error(`Etherscan HTTP error: ${resp.status} ${resp.statusText}`);
   }
 
-  const json = await resp.json();
-  console.log("Etherscan response status:", json.status, "message:", json.message);
+    const json = await resp.json();
+  console.log("Etherscan v2 response status:", json.status, "message:", json.message);
 
   if (json.status !== "1" || !Array.isArray(json.result) || json.result.length === 0) {
-    console.log("No transactions found for address:", address);
+    console.log("No transactions found on Etherscan v2 for:", address);
+    console.log("Full Etherscan v2 JSON:", JSON.stringify(json, null, 2)); // 👈 добавили
     return {
       txCount: 0,
-      activityDays: 0
+      activityDays: 0,
+      defiSwaps: 0
     };
   }
 
@@ -106,28 +164,45 @@ async function fetchTxStatsFromEtherscan(address) {
 
   let outgoingCount = 0;
   const activeDaysSet = new Set();
+  let defiSwaps = 0;
 
   for (const tx of result) {
     const from = String(tx.from || "").toLowerCase();
+    const to = String(tx.to || "").toLowerCase();
     const ts = Number(tx.timeStamp);
 
-    if (from === lowerAddr) {
-      outgoingCount += 1;
+    // День активности — если адрес участвовал как from или to
+    if (!Number.isNaN(ts) && ts > 0 && (from === lowerAddr || to === lowerAddr)) {
+      const dayStr = new Date(ts * 1000).toISOString().slice(0, 10);
+      activeDaysSet.add(dayStr);
     }
 
-    if (!Number.isNaN(ts) && ts > 0) {
-      const dayStr = new Date(ts * 1000).toISOString().slice(0, 10); // YYYY-MM-DD
-      activeDaysSet.add(dayStr);
+    // txCount — только исходящие транзакции
+    if (from === lowerAddr) {
+      outgoingCount += 1;
+
+      // пробуем определить DeFi swap / bridge по functionName
+      const fnName = tx.functionName || "";
+      if (isDefiLikeFunctionName(fnName)) {
+        defiSwaps += 1;
+      }
     }
   }
 
   console.log(
-    `Stats for ${address}: outgoingCount=${outgoingCount}, activityDays=${activeDaysSet.size}`
+    `Etherscan stats for ${address}: outgoingCount=${outgoingCount}, ` +
+    `activityDays=${activeDaysSet.size}, defiSwaps=${defiSwaps}`
   );
+
+  // safety: DeFi не может превышать общее число исходящих
+  if (defiSwaps > outgoingCount) {
+    defiSwaps = outgoingCount;
+  }
 
   return {
     txCount: outgoingCount,
-    activityDays: activeDaysSet.size
+    activityDays: activeDaysSet.size,
+    defiSwaps
   };
 }
 
@@ -144,18 +219,27 @@ app.get("/api/wallet/:address/score", async (req, res) => {
     data.network = "base-mainnet";
     data.updated_at = new Date().toISOString();
 
-    // Начальные значения из мока (как fallback)
-    let txCountRaw = data.scores.metrics.tx_count.raw_value;
-    let activityDaysRaw = data.scores.metrics.activity_days.raw_value;
+    // Стартовые значения — из JSON (как самый крайний fallback)
+    let txCountRaw =
+      (data.scores.metrics.tx_count && data.scores.metrics.tx_count.raw_value) || 0;
+    let activityDaysRaw =
+      (data.scores.metrics.activity_days && data.scores.metrics.activity_days.raw_value) || 0;
+    let defiSwapsRaw =
+      (data.scores.metrics.defi_swaps && data.scores.metrics.defi_swaps.raw_value) || 0;
 
     try {
       const stats = await fetchTxStatsFromEtherscan(address);
       if (stats) {
         txCountRaw = stats.txCount;
         activityDaysRaw = stats.activityDays;
+        defiSwapsRaw = stats.defiSwaps;
       }
     } catch (e) {
-      console.error("Error fetching from Etherscan, using mock values:", e);
+      console.error("Error fetching from Etherscan v2, using mock/fallback values:", e);
+    }
+
+    if (defiSwapsRaw > txCountRaw) {
+      defiSwapsRaw = txCountRaw;
     }
 
     // --- Обновляем tx_count ---
@@ -174,6 +258,14 @@ app.get("/api/wallet/:address/score", async (req, res) => {
     actMetric.tier_label = ACTIVITY_TIER_LABELS[actTier] || "Unknown";
     data.scores.tiers.activity_days = actTier;
 
+    // --- Обновляем defi_swaps ---
+    const defiMetric = data.scores.metrics.defi_swaps;
+    defiMetric.raw_value = defiSwapsRaw;
+    const defiTier = mapDefiSwapsToTier(defiSwapsRaw);
+    defiMetric.tier = defiTier;
+    defiMetric.tier_label = DEFI_TIER_LABELS[defiTier] || "Unknown";
+    data.scores.tiers.defi_swaps = defiTier;
+
     res.json(data);
   } catch (err) {
     console.error("Error in /api/wallet/:address/score:", err);
@@ -187,7 +279,6 @@ app.get("/api/wallet/:address/score", async (req, res) => {
 app.get("/api/beast/:tokenId/metadata", (req, res) => {
   try {
     const tokenId = req.params.tokenId;
-
     const data = loadJson("mocks/beast_0_metadata.json");
 
     data.name = `Base Beast #${tokenId}`;
