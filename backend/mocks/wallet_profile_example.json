@@ -1,112 +1,127 @@
 {
   "address": "0xfd32507B33220E1Be82E9bb83B4Ea74d4B59Cb25",
-  "network": "base-sepolia",
-  "updated_at": "2025-12-04T18:45:00Z",
+  "network": "base-mainnet",
+  "updated_at": null,
   "scores": {
     "overall": {
-      "tier": 4,
-      "label": "Base Adept",
-      "score": 73
+      "tier": 0,
+      "label": "Newcomer",
+      "score": 0
     },
     "tiers": {
-  "activity_days": 0,
-  "tx_count": 0,
-  "defi_swaps": 0,
-  "liquidity_yield": 0,
-  "builder": 0,
-  "social": 0
-},
+      "activity_days": 0,
+      "tx_count": 0,
+      "defi_swaps": 0,
+      "liquidity_yield": 0,
+      "builder": 0,
+      "nft_mints": 0,
+      "social": 0
+    },
     "metrics": {
       "activity_days": {
         "label": "Base Activity Days",
         "category": "core",
-        "raw_value": 52,
-        "tier": 3,
-        "tier_label": "Regular",
-        "description": "Number of days with at least 1 Base Mainnet tx."
+        "raw_value": 0,
+        "tier": 0,
+        "tier_label": "Dormant",
+        "description": "Number of days with at least 1 Base Mainnet transaction."
       },
       "tx_count": {
         "label": "Total Transactions",
         "category": "core",
-        "raw_value": 1234,
-        "tier": 4,
-        "tier_label": "Heavy User",
+        "raw_value": 0,
+        "tier": 0,
+        "tier_label": "No Activity",
         "description": "All Base Mainnet transactions sent by this address."
       },
       "defi_swaps": {
-  "label": "DeFi Swaps",
-  "category": "defi",
-  "raw_value": 0,
-  "tier": 0,
-  "tier_label": "No DeFi",
-  "description": "Number of swaps across major DEXes on Base."
-},
+        "label": "DeFi Swaps",
+        "category": "defi",
+        "raw_value": 0,
+        "tier": 0,
+        "tier_label": "No DeFi",
+        "description": "Number of swaps across major DEXes on Base."
+      },
       "liquidity_yield": {
         "label": "DeFi Liquidity / Yield",
         "category": "defi",
-        "raw_value": 20,
-        "tier": 1,
-        "tier_label": "Getting Started",
-        "description": "Providing LP, lending, borrowing, staking on Base."
+        "raw_value": 0,
+        "tier": 0,
+        "tier_label": "No Liquidity",
+        "description": "Cumulative USD volume x days in LP, lending and staking positions on Base."
       },
       "builder": {
         "label": "Builder Score",
         "category": "builder",
-        "raw_value": 12.4,
-        "tier": 1,
-        "tier_label": "New Builder",
-        "description": "Contracts deployed & project footprint on Base."
+        "raw_value": 0,
+        "tier": 0,
+        "tier_label": "Not a Builder",
+        "description": "Talent Protocol Builder Score (0-100) mapped to Base Builder armor."
+      },
+      "nft_mints": {
+        "label": "NFT Mints",
+        "category": "nft",
+        "raw_value": 0,
+        "tier": 0,
+        "tier_label": "No NFTs",
+        "description": "Number of NFTs minted on Base (incoming mints to this address)."
       },
       "social": {
         "label": "Social Score",
         "category": "social",
-        "raw_value": 68,
-        "tier": 3,
-        "tier_label": "Connected",
+        "raw_value": 0,
+        "tier": 0,
+        "tier_label": "Silent",
         "description": "Offchain social influence mapped to this address."
       }
     }
   },
   "beast_preview": {
-    "species_id": 7,
-    "rarity": "Rare",
-    "user_type": "Builder",
+    "species_id": 1,
+    "rarity": "Common",
+    "user_type": "User",
     "visual_traits": {
       "size": {
         "source_metric": "activity_days",
-        "tier": 3,
-        "label": "Tall",
-        "description": "Big and confident Base native."
+        "tier": 0,
+        "label": "Tiny",
+        "description": "Just spawned on Base."
       },
       "muscles": {
         "source_metric": "tx_count",
-        "tier": 4,
-        "label": "Shredded",
-        "description": "High onchain throughput."
+        "tier": 0,
+        "label": "No Muscles",
+        "description": "No visible onchain activity yet."
       },
       "weapon": {
         "source_metric": "defi_swaps",
-        "tier": 2,
-        "label": "Standard Sword",
-        "description": "Some DEX experience, but more to come."
+        "tier": 0,
+        "label": "No Weapon",
+        "description": "Has not touched DeFi swaps yet."
       },
       "shield": {
         "source_metric": "liquidity_yield",
-        "tier": 1,
-        "label": "Basic Shield",
-        "description": "First steps in LP / staking / lending."
+        "tier": 0,
+        "label": "No Shield",
+        "description": "No LP, lending or staking activity."
       },
       "armor": {
         "source_metric": "builder",
-        "tier": 1,
-        "label": "Light Armor",
-        "description": "New builder exploring Base."
+        "tier": 0,
+        "label": "No Armor",
+        "description": "Has not earned builder armor yet."
+      },
+      "neck_medallion": {
+        "source_metric": "nft_mints",
+        "tier": 0,
+        "label": "No Medallion",
+        "description": "Has not minted NFTs on Base yet."
       },
       "helmet": {
         "source_metric": "social",
-        "tier": 3,
-        "label": "Influencer Helm",
-        "description": "Decent social reach and reputation."
+        "tier": 0,
+        "label": "No Helmet",
+        "description": "No visible social presence yet."
       }
     }
   }

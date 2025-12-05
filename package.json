@@ -5,8 +5,10 @@
   "main": "base-balance.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start:backend": "node backend/server.js"
+    "start:backend": "node backend/server.js",
+    "test:moralis": "node backend/test_moralis_stats.js"
   },
+
   "repository": {
     "type": "git",
     "url": "git+https://github.com/KaanBagnyuk/base-playground.git"
@@ -21,6 +23,7 @@
   "homepage": "https://github.com/KaanBagnyuk/base-playground#readme",
   "dependencies": {
     "@openzeppelin/contracts": "^5.4.0",
+    "cors": "^2.8.5",
     "express": "^5.2.1"
   },
   "devDependencies": {

@@ -1,73 +1,55 @@
 {
   "name": "Base Beast #0",
-  "description": "Your Base Mainnet activity, DeFi usage, builder footprint and social reach, all forged into a single onchain Beast.",
-  "image": "https://cdn.basebeast.xyz/images/0.png",
+  "description": "Base Beast is an onchain activity avatar for the Base network. Each Beast reflects the wallet's activity across Core, DeFi, Building, NFTs and Social.",
   "external_url": "https://app.basebeast.xyz/beast/0",
-  "background_color": "020b26",
+  "image": "ipfs://QmPlaceholderBaseBeastImage0",
   "attributes": [
     {
       "trait_type": "Species",
-      "value": "Plasma Drake"
+      "value": "Proto Beast"
     },
     {
       "trait_type": "Rarity",
-      "value": "Rare"
+      "value": "Common"
     },
     {
       "trait_type": "User Type",
-      "value": "Builder"
+      "value": "Newcomer"
     },
     {
-      "trait_type": "Size",
-      "value": "Tall"
-    },
-    {
-      "trait_type": "Muscles",
-      "value": "Shredded"
-    },
-    {
-      "trait_type": "Weapon",
-      "value": "Standard Sword"
-    },
-    {
-      "trait_type": "Shield",
-      "value": "Basic Shield"
-    },
-    {
-      "trait_type": "Armor",
-      "value": "Light Builder Armor"
-    },
-    {
-      "trait_type": "Helmet",
-      "value": "Influencer Helm"
-    },
-    {
+      "display_type": "number",
       "trait_type": "Activity Days Tier",
-      "value": 3
+      "value": 0
     },
     {
-      "trait_type": "Total Transactions Tier",
-      "value": 4
+      "display_type": "number",
+      "trait_type": "Tx Count Tier",
+      "value": 0
     },
     {
+      "display_type": "number",
       "trait_type": "DeFi Swaps Tier",
-      "value": 2
+      "value": 0
     },
     {
-      "trait_type": "DeFi Liquidity Tier",
-      "value": 1
+      "display_type": "number",
+      "trait_type": "Liquidity & Yield Tier",
+      "value": 0
     },
     {
+      "display_type": "number",
       "trait_type": "Builder Tier",
-      "value": 1
+      "value": 0
     },
     {
+      "display_type": "number",
+      "trait_type": "NFT Mints Tier",
+      "value": 0
+    },
+    {
+      "display_type": "number",
       "trait_type": "Social Tier",
-      "value": 3
-    },
-    {
-      "trait_type": "Overall Tier",
-      "value": 4
+      "value": 0
     }
   ]
 }

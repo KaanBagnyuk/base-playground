@@ -1,144 +1,105 @@
-# Base Playground – Hardhat + Counter on Base Sepolia
+# Base Playground – Hardhat + Base Beast
 
-This repository is my personal playground for learning how to build on **Base**, starting from zero experience as a developer.
+Это мой персональный playground для обучения разработке на **Base** и параллельно — дом для проекта **Base Beast** (ончейн-паспорт активности).
 
-It contains a minimal but complete setup:
+Репозиторий сейчас содержит две большие части:
 
-- Hardhat project (TypeScript / ESM)
-- A simple Solidity smart contract (`Counter`)
-- Scripts to deploy and interact with the contract on the **Base Sepolia** testnet using `ethers` v6
+1. **Base Playground** — учебные смарт-контракты, скрипты и прогресс по Base Learn.
+2. **Base Beast** — backend + смарт-контракты для геймифицированного паспорта активности в сети Base.
 
 ---
 
-## What this project includes
+## Part 1 — Base Playground (Hardhat / Solidity)
 
-### Smart contract
+### Что здесь есть
+
+- Hardhat-проект (TypeScript / ESM).
+- Простой контракт `Counter`.
+- Дополнительный контракт `BasicMath`.
+- Скрипты деплоя и взаимодействия с контрактами на **Base Sepolia**.
+- Конфиги TypeScript, Hardhat и игнор `.env`.
+
+### Контракты
 
 - `contracts/Counter.sol`  
-  A minimal counter contract that:
-  - stores an integer `count`
-  - can increment the value
-  - emits an event when the value changes
+  Минимальный счётчик:
+  - хранит `count`,
+  - умеет инкрементиться,
+  - эмитит событие при изменении значения.
 
-### Scripts
+- `contracts/BasicMath.sol`  
+  Набор чистых функций:
+  - `add`,
+  - `subtract`,
+  - `multiply`,
+  - `divide`.
+
+### Скрипты
 
 - `scripts/deploy-counter.mjs`  
-  Node script that:
-  - reads the compiled artifact of `Counter`
-  - connects to Base Sepolia via JSON-RPC
-  - deploys the contract using a wallet private key from `.env`
-  - prints the deployment transaction hash and the contract address
+  - читает артефакт `Counter`,
+  - коннектится к Base Sepolia,
+  - деплоит контракт с приватного ключа из `.env`,
+  - выводит tx hash и адрес контракта.
 
 - `scripts/interact-counter.mjs`  
-  Node script that:
-  - connects to the already deployed `Counter` contract
-  - reads the current `count` value
-  - sends a transaction to `increment()`
-  - waits for confirmation
-  - reads the updated `count` value
+  - подключается к уже деплоенному `Counter`,
+  - читает текущее значение `count`,
+  - вызывает `increment()`,
+  - ждёт подтверждения,
+  - читает обновлённое значение.
 
-### Config
+### Конфигурация
 
-- `hardhat.config.ts`  
-  Hardhat configuration (Solidity version, networks, etc.).
-- `tsconfig.json`  
-  TypeScript config used by Hardhat.
-- `.gitignore`  
-  Makes sure build artifacts, `node_modules`, and **`.env`** are not committed.
+- `hardhat.config.ts` — конфиг Hardhat (солидити, сети и т.д.).
+- `tsconfig.json` — конфиг TypeScript.
+- `.gitignore` — артефакты сборки, `node_modules`, `.env` не попадают в git.
 
-> ⚠️ **Important:** `.env` is ignored by Git. Never commit private keys.
+> ⚠️ `.env` в git не коммитится. Приватные ключи всегда держим только локально.
 
+### Пример деплоенного контракта
 
-### BasicMath contract
+- **Network:** Base Sepolia  
+- **Contract:** `Counter`  
+- **Example address:** `0xfF3D6d5A56C4C8c0397D2cd884A3Cdd4eEe14195`  
 
-- **File:** `contracts/BasicMath.sol`
-- **Purpose:** exposes simple math functions (`add`, `subtract`, `multiply`, `divide`) as pure functions.
-- **Network:** Base Sepolia
-- **Example address:** `0xFC297da5286eCF22C82Ef79ac01268F97C74a5B0`
+Смотреть в BaseScan:  
+https://sepolia.basescan.org/address/0xfF3D6d5A56C4C8c0397D2cd884A3Cdd4eEe14195
 
-You can view it on Basescan:  
+### BasicMath on Base Sepolia
+
+- **Network:** Base Sepolia  
+- **Contract:** `BasicMath`  
+- **Example address:** `0xFC297da5286eCF22C82Ef79ac01268F97C74a5B0`  
+
+BaseScan:  
 https://sepolia.basescan.org/address/0xFC297da5286eCF22C82Ef79ac01268F97C74a5B0
 
 ---
 
-## Tech stack
+### Base Learn Progress
 
-- **Node.js**
-- **Hardhat** (v3, TypeScript / ESM)
-- **Solidity** `^0.8.28`
-- **ethers** v6
-- **dotenv**
-- **Base Sepolia** testnet
+Все 13 модулей Base Learn пройдены с использованием этого репо:
 
----
-## Base Learn Progress
+- ✅ Storage  
+- ✅ Arrays  
+- ✅ Mappings  
+- ✅ Structs (`GarageManager.sol`)  
+- ✅ Functions / Error Handling (`ErrorTriageExercise.sol`)  
+- ✅ Minimal Tokens (`MinimalToken.sol`)  
+- ✅ ERC-20 Tokens (`MinimalToken.sol`, `WeightedVoting.sol`)  
+- ✅ ERC-721 Tokens (`HaikuNFT.sol`)  
+- ✅ ... (остальные модули)
 
-All 13 Base Learn modules completed using this repo:
-
-- ✅ Storage
-- ✅ Arrays
-- ✅ Mappings
-- ✅ Structs (`GarageManager.sol`)
-- ✅ Functions / Error Handling (`ErrorTriageExercise.sol`)
-- ✅ Minimal Tokens (`MinimalToken.sol`)
-- ✅ ERC-20 Tokens (`MinimalToken.sol`, `WeightedVoting.sol`)
-- ✅ ERC-721 Tokens (`HaikuNFT.sol`)
-- ✅ ... (other modules)
-
-Network: Base Sepolia  
+Network: **Base Sepolia**  
 Builder wallet (public): `0xfd32507B33220E1Be82E9bb83B4Ea74d4B59Cb25`
 
 ---
 
-## Getting started
+## Getting started (общие шаги)
 
-### 1. Clone the repo
+### 1. Клонирование репозитория
 
 ```bash
 git clone https://github.com/KaanBagnyuk/base-playground.git
 cd base-playground
-## Deployed contract info (example)
-
-- **Network:** Base Sepolia
-- **Contract:** `Counter`
-- **Example address:** `0xfF3D6d5A56C4C8c0397D2cd884A3Cdd4eEe14195`
-
-You can view it on Basescan:  
-https://sepolia.basescan.org/address/0xfF3D6d5A56C4C8c0397D2cd884A3Cdd4eEe14195
-
-# Base Beast — Onchain Activity Passport for Base
-
-Base Beast — это ончейн-паспорт активности для пользователей сети Base.  
-Каждый кошелёк получает **Beast Score** (набор метрик) и может заминтить NFT-монстра (Base Beast), чьи атрибуты завязаны на реальную активность в сети.
-
-## Архитектура
-
-### Onchain (Hardhat / Solidity)
-
-Контракты живут в папке `contracts/` и деплоятся через Hardhat на Base:
-
-- **BeastScoreRegistry.sol**  
-  Хранит структурированный скор кошелька:
-  - `activityDaysTier`
-  - `txCountTier`
-  - `defiSwapsTier`
-  - `liquidityTier`
-  - `builderTier`
-  - `overallTier`  
-  Обновляется только специальным адресом `scoreOracle`.
-
-- **BaseBeastNFT.sol**  
-  ERC-721 NFT:
-  - читает скор из `BeastScoreRegistry`,
-  - генерирует визуальные параметры монстра (`speciesId`, `rarity`, `userType`),
-  - фиксирует локальный snapshot `BeastScoreLocal` + `BeastVisual` по `tokenId`.
-
-Настройка Hardhat — в `hardhat.config.ts`. Сеть Base Sepolia уже добавлена как:
-
-```ts
-"base-sepolia": {
-  type: "http",
-  url: "https://sepolia.base.org",
-  chainId: 84532,
-  accounts: PRIVATE_KEY ? [PRIVATE_KEY] : []
-}
