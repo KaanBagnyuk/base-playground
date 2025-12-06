@@ -9,14 +9,16 @@
       "score": 0
     },
     "tiers": {
-      "activity_days": 0,
-      "tx_count": 0,
-      "defi_swaps": 0,
-      "liquidity_yield": 0,
-      "builder": 0,
-      "nft_mints": 0,
-      "social": 0
-    },
+  "activity_days": 0,
+  "tx_count": 0,
+  "defi_swaps": 0,
+  "liquidity_yield": 0,
+  "builder": 0,
+  "nft_mints": 0,
+  "social": 0,
+  "gas_spent": 0,
+  "defi_volume": 0
+},
     "metrics": {
       "activity_days": {
         "label": "Base Activity Days",
@@ -73,7 +75,23 @@
         "tier": 0,
         "tier_label": "Silent",
         "description": "Offchain social influence mapped to this address."
-      }
+      },
+      "gas_spent": {
+  "label": "Gas Spent on Base",
+  "category": "core",
+  "raw_value": 0,
+  "tier": 0,
+  "tier_label": "No Ring",
+  "description": "Total gas this wallet has spent on Base (native ETH, summed over all outgoing transactions)."
+},
+"defi_volume": {
+  "label": "DeFi Volume",
+  "category": "defi",
+  "raw_value": 0,
+  "tier": 0,
+  "tier_label": "Barefoot",
+  "description": "USD-equivalent volume across swaps, LP, lending, staking and borrowing on Base. v0: swap volume only."
+}
     }
   },
   "beast_preview": {
@@ -122,7 +140,19 @@
         "tier": 0,
         "label": "No Helmet",
         "description": "No visible social presence yet."
-      }
+      }, 
+      "ring": {
+    "source_metric": "gas_spent",
+    "tier": 0,
+    "label": "No Ring",
+    "description": "Ring forged from the gas this Beast has burned on Base."
+  },
+  "boots": {
+    "source_metric": "defi_volume",
+    "tier": 0,
+    "label": "Barefoot",
+    "description": "Boots that reflect how much DeFi ground this Beast has covered on Base."
+  }
     }
   }
 }

@@ -1,25 +1,40 @@
 import { network } from "hardhat";
 
+const { ethers, networkName } = await network.connect();
+
 async function main() {
-  // Hardhat 3-style: получаем ethers через network.connect()
-  const { ethers } = await network.connect();
+  console.log("======================================");
+  console.log("🚀 Deploying BeastScoreRegistry");
+  console.log("Network:", networkName);
+  console.log("======================================");
 
   const [deployer] = await ethers.getSigners();
-  console.log("Deploying BeastScoreRegistry with account:", deployer.address);
 
-  // В ethers v6 контракт деплоится так:
-  // deployContract("ИмяКонтрактаИзArtifacts", [аргументы конструктора])
-  const registry = await ethers.deployContract("BeastScoreRegistry", [
-    deployer.address, // initialOwner / scoreOracle
-  ]);
+  const balance = await ethers.provider.getBalance(deployer.address);
 
+  console.log("Deployer address:", deployer.address);
+  console.log("Deployer balance (ETH):", ethers.formatEther(balance));
+
+  // Для MVP делаем орклом самого деплойера
+  const scoreOracle = deployer.address;
+  console.log("Score oracle will be:", scoreOracle);
+
+  const Registry = await ethers.getContractFactory("BeastScoreRegistry");
+  const registry = await Registry.deploy(scoreOracle);
+
+  console.log("⏳ Waiting for deployment tx to confirm...");
   await registry.waitForDeployment();
 
   const registryAddress = await registry.getAddress();
-  console.log("BeastScoreRegistry deployed to:", registryAddress);
+
+  console.log("✅ BeastScoreRegistry deployed!");
+  console.log("Contract address:", registryAddress);
+  console.log("======================================");
+  console.log("👉 Вставь этот адрес в .env как:");
+  console.log(`BEAST_REGISTRY_ADDRESS=${registryAddress}`);
 }
 
 main().catch((error) => {
-  console.error(error);
+  console.error("❌ Error in deployBeastScoreRegistry:", error);
   process.exitCode = 1;
 });

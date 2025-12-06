@@ -3,16 +3,19 @@ pragma solidity ^0.8.20;
 
 contract BeastScoreRegistry {
     struct BeastScore {
-        uint8 activityDaysTier;   // 0–5
-        uint8 txCountTier;        // 0–5
-        uint8 defiSwapsTier;      // 0–5
-        uint8 liquidityTier;      // 0–5
-        uint8 builderTier;        // 0–5
-        uint8 overallTier;        // 0–7 (Newcomer..Legend)
+        uint8 activityDaysTier; // 0–5
+        uint8 txCountTier;      // 0–5
+        uint8 defiSwapsTier;    // 0–5
+        uint8 liquidityTier;    // 0–5
+        uint8 builderTier;      // 0–5
+        uint8 nftMintsTier;     // 0–5
+        uint8 socialTier;       // 0–5
+        uint8 gasSpentTier;     // 0–5
+        uint8 defiVolumeTier;   // 0–5
+        uint8 overallTier;      // 0–5
     }
 
     mapping(address => BeastScore) public walletScores;
-
     address public scoreOracle;
 
     event ScoreOracleChanged(address indexed oldOracle, address indexed newOracle);
@@ -38,7 +41,6 @@ contract BeastScoreRegistry {
 
     function setScore(address user, BeastScore calldata score) external onlyScoreOracle {
         require(user != address(0), "User cannot be zero");
-
         walletScores[user] = score;
         emit ScoreUpdated(user, score);
     }

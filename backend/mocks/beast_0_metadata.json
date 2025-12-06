@@ -50,6 +50,16 @@
       "display_type": "number",
       "trait_type": "Social Tier",
       "value": 0
-    }
+    },
+    {
+  "display_type": "number",
+  "trait_type": "Gas Spent Tier",
+  "value": 0
+},
+{
+  "display_type": "number",
+  "trait_type": "DeFi Volume Tier",
+  "value": 0
+}
   ]
 }
