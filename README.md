@@ -1,107 +1,105 @@
-# Base Playground – Hardhat + Counter on Base Sepolia
+README: base-playground
+# Base Playground
 
-This repository is my personal playground for learning how to build on **Base**, starting from zero experience as a developer.
+Base Playground is my personal learning and experimentation repository for the **Base** network.
 
-It contains a minimal but complete setup:
+It started as a companion to the official **Base Learn** modules and contains small, focused smart contracts and scripts that I use to practice:
 
-- Hardhat project (TypeScript / ESM)
-- A simple Solidity smart contract (`Counter`)
-- Scripts to deploy and interact with the contract on the **Base Sepolia** testnet using `ethers` v6
+- Solidity basics
+- Hardhat workflows
+- Deploying and interacting with contracts on Base Sepolia
+- Working with ethers.js / TypeScript
+
+The repository is intentionally simple: it is a sandbox, not a production app.
 
 ---
 
-## What this project includes
+## Goals
 
-### Smart contract
-
-- `contracts/Counter.sol`  
-  A minimal counter contract that:
-  - stores an integer `count`
-  - can increment the value
-  - emits an event when the value changes
-
-### Scripts
-
-- `scripts/deploy-counter.mjs`  
-  Node script that:
-  - reads the compiled artifact of `Counter`
-  - connects to Base Sepolia via JSON-RPC
-  - deploys the contract using a wallet private key from `.env`
-  - prints the deployment transaction hash and the contract address
-
-- `scripts/interact-counter.mjs`  
-  Node script that:
-  - connects to the already deployed `Counter` contract
-  - reads the current `count` value
-  - sends a transaction to `increment()`
-  - waits for confirmation
-  - reads the updated `count` value
-
-### Config
-
-- `hardhat.config.ts`  
-  Hardhat configuration (Solidity version, networks, etc.).
-- `tsconfig.json`  
-  TypeScript config used by Hardhat.
-- `.gitignore`  
-  Makes sure build artifacts, `node_modules`, and **`.env`** are not committed.
-
-> ⚠️ **Important:** `.env` is ignored by Git. Never commit private keys.
-
-
-### BasicMath contract
-
-- **File:** `contracts/BasicMath.sol`
-- **Purpose:** exposes simple math functions (`add`, `subtract`, `multiply`, `divide`) as pure functions.
-- **Network:** Base Sepolia
-- **Example address:** `0xFC297da5286eCF22C82Ef79ac01268F97C74a5B0`
-
-You can view it on Basescan:  
-https://sepolia.basescan.org/address/0xFC297da5286eCF22C82Ef79ac01268F97C74a5B0
+- Learn the Base developer tooling in a hands-on way
+- Build muscle memory around Hardhat, deployments, and scripts
+- Experiment with simple token and NFT contracts before using them in real projects
+- Keep a history of my progress as I move from “hello world” contracts to more advanced patterns
 
 ---
 
 ## Tech stack
 
-- **Node.js**
-- **Hardhat** (v3, TypeScript / ESM)
 - **Solidity** `^0.8.28`
-- **ethers** v6
-- **dotenv**
-- **Base Sepolia** testnet
+- **Hardhat** (TypeScript / ESM)
+- **ethers.js v6**
+- **Base Sepolia** testnet as the main target network
 
 ---
-## Base Learn Progress
 
-All 13 Base Learn modules completed using this repo:
+## Repository structure
 
-- ✅ Storage
-- ✅ Arrays
-- ✅ Mappings
-- ✅ Structs (`GarageManager.sol`)
-- ✅ Functions / Error Handling (`ErrorTriageExercise.sol`)
-- ✅ Minimal Tokens (`MinimalToken.sol`)
-- ✅ ERC-20 Tokens (`MinimalToken.sol`, `WeightedVoting.sol`)
-- ✅ ERC-721 Tokens (`HaikuNFT.sol`)
-- ✅ ... (other modules)
+Typical layout (may evolve over time):
 
-Network: Base Sepolia  
-Builder wallet (public): `0x...`  <!-- сюда вставь адрес Wallet B -->
+- `contracts/` – Solidity contracts used in the learning modules  
+  Examples:
+  - `Counter.sol`
+  - `BasicMath.sol`
+  - minimal ERC‑20 and ERC‑721 implementations
+- `scripts/` – Hardhat scripts for deployment and interaction
+- `hardhat.config.ts` – network and compiler configuration
+- `package.json` – Node.js scripts and dependencies
+
+The exact set of contracts and scripts may change as I complete new Base Learn lessons.
 
 ---
 
 ## Getting started
 
-### 1. Clone the repo
+Clone the repository and install dependencies:
 
 ```bash
 git clone https://github.com/KaanBagnyuk/base-playground.git
 cd base-playground
-## Deployed contract info (example)
+npm install
+```
 
-- **Network:** Base Sepolia
-- **Contract:** `Counter`
-- **Example address:** `0xfF3D6d5A56C4C8c0397D2cd884A3Cdd4eEe14195`
+Compile contracts:
 
-You can view it on Basescan:  
-https://sepolia.basescan.org/address/0xfF3D6d5A56C4C8c0397D2cd884A3Cdd4eEe14195
+```bash
+npx hardhat compile
+```
+
+Run your first local Hardhat node:
+
+```bash
+npx hardhat node
+```
+
+Or deploy to **Base Sepolia** (example):
+
+```bash
+npx hardhat run scripts/deployCounter.ts --network base-sepolia
+```
+
+> Make sure you have a `.env` file with a funded private key for Base Sepolia if the deploy script requires it.
+
+---
+
+## Base Learn modules
+
+This playground loosely follows the structure of the Base Learn curriculum.  
+Each small contract or script is meant to correspond to a specific learning topic:
+
+- basic storage and arithmetic contracts
+- ownership and access control
+- simple ERC‑20 / ERC‑721 examples
+- reading state and sending transactions via scripts
+
+I do not treat this repository as a public tutorial – it is a personal notebook –  
+but you can still peek at it to see my learning path.
+
+---
+
+## Relation to Base Beast Passport
+
+The **Base Beast Passport** project grew out of this playground and now lives in its own dedicated repository:
+
+➡️ https://github.com/KaanBagnyuk/base-beast-passport
+
+`base-playground` stays focused on **learning**, while `base-beast-passport` is a real product-style project built on top of what I learned here.
